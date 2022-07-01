@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Scramble game</title>
+        <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Sarabun:wght@100&display=swap" rel="stylesheet">
+        <style>
+            *{margin : 0; padding : 0; box-sizing: border-box;}
+
+            header{
+                width : 100%; 
+                line-height : 20vh;
+                background-color : #20bfc6;
+            }
+            h1{
+                text-align: center;
+                color: rgb(150, 5, 55);
+                font-size: 1.8rem;
+                letter-spacing: 5px;
+                font-family: 'Carter One', cursive;
+            }
+            section{
+                height: 80vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: blueviolet;
+            }
+            .gameArea{
+                width: 50%;
+                height: 400px;
+                background-color: brown;
+                padding: 20px 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 8px 6px -6px black;
+                font-family: 'Sarabun', sans-serif;
+            }
+            h3{
+                text-align: center;
+                font-size: 1.5rem; 
+            }
+            input{
+                width: 40%;
+                padding: 15px 0;
+                text-align: center;
+                border-radius: 25px;
+                outline: none;
+                border: none;
+                background-color: pink;
+                color: black;
+                margin: 2rem 0;
+                font-size: 1.1rem;
+            }
+            button{
+                font-size: 1rem;
+                cursor: pointer;
+                outline: none;
+                border: cadetblue;
+                text-decoration: none;
+                margin-top: 10px;
+                color: darkblue;
+            }
+            button.btn{
+                font-weight: 600;
+                padding: 1rem 2rem;
+                background: white;
+                text-transform: uppercase;
+                transition-property: all;
+                transition-duration: 0.5s;
+                transition-timing-function: cubic-bezier(0.65, -0.25, 0.25, 1.95);
+            }
+            button.btn:hover, button.btn:focus, button.btn:active{
+                letter-spacing: 0.125rem;
+                word-spacing: 0.2rem;
+            }
+            .hidden{
+                display: none;
+            }
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Guess the word game!</h1>
+        </header>
+        <section>
+            <div class="gameArea">
+                <h3 class="msg"></h3>
+                <input type="text" class="hidden">
+                <button class="btn">Click here to start</button>
+            </div>
+        </section>
+        <script>
+            const msg= document.querySelector('.msg');
+            const guess= document.querySelector('input');
+            const btn= document.querySelector('.btn');
+            let play= false;
+            let newWords= "";
+            let randWords= "";
+            let sWords= ['sneha','fish','engineer','python','clean','machine',
+            'bottle','destination','thanos','avengers','fanta','desktop','laptop','javascript','autograph','array','prototype',
+             'window'];
+
+            const createNewWords = () => {
+                let ranNum= Math.floor(Math.random() * sWords.length);
+                let newTempSwords= sWords[ranNum];
+                return newTempSwords;
+
+            }
+
+            const scrambleWords= (arr) => {
+                for(let i=arr.length-1; i>0; i--){
+                    let temp = arr[i];
+                    let j= Math.floor(Math.random() * (i+1));
+                    arr[i]=arr[j];
+                    arr[j]=temp;
+
+                }
+                return arr;
+
+            }
+
+            btn.addEventListener('click',function(){
+                
+                if(!play){
+                    console.log('which is the flow')
+                    play= true;
+                    btn.innerHTML= "Guess";
+                    guess.classList.toggle('hidden');
+                    newWords= createNewWords();
+                    randWords= scrambleWords(newWords.split("")).join("");
+                    msg.innerHTML= randWords;
+                }
+                else{
+                    let tempWord= guess.value;
+                    if(tempWord== newWords){
+                        // console.log("YAY Correct!");
+                        play = false;
+                        msg.innerHTML = `YAY Correct! ${newWords}`;
+                        btn.innerHTML="Start Again";
+                        guess.classList.toggle('hidden');
+                        guess.value="";
+                    }
+                    else{
+                        // console.log("OPPS Wrong!");
+                        msg.innerHTML = `OPPS Wrong! The right word is ${newWords}`;
+
+                    }
+                }
+            })
+        </script>
+    </body>
+
+</html>
